@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="custom_arm">
+
+  <!-- Material -->
+  <material name="gray">
+    <color rgba="0.7 0.7 0.7 1"/>
+  </material>
+
+  <!-- Base link -->
+  <link name="base_link">
+    <visual>
+      <geometry><box size="0.3 0.3 0.1"/></geometry>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.3 0.3 0.1"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Arm segments -->
+  <xacro:macro name="arm_link" params="id length radius">
+    <link name="link_${id}">
+      <visual>
+        <geometry><cylinder length="${length}" radius="${radius}"/></geometry>
+        <material name="gray"/>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry><cylinder length="${length}" radius="${radius}"/></geometry>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0"/>
+      </collision>
+      <inertial>
+        <mass value="0.5"/>
+        <inertia ixx="0.005" ixy="0" ixz="0" iyy="0.005" iyz="0" izz="0.005"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <!-- Add arm links -->
+  <xacro:arm_link id="1" length="0.5" radius="0.15"/>
+  <xacro:arm_link id="2" length="0.4" radius="0.10"/>
+  <xacro:arm_link id="3" length="0.3" radius="0.05"/>
+  <xacro:arm_link id="ee" length="0.1" radius="0.30"/>
+
+
+
+  <!-- Joints 
+  <joint name="joint_1" type="fixed">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="joint_2" type="fixed">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="joint_3" type="fixed">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0 0 0.4" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="ee_joint" type="fixed">
+    <parent link="link_3"/>
+    <child link="link_ee"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  </joint>
+  -->
+
+
+<!-- Revolute Joint 1 -->
+<joint name="joint_1" type="revolute">
+  <parent link="base_link"/>
+  <child link="link_1"/>
+  <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+</joint>
+
+<!-- Revolute Joint 2 -->
+<joint name="joint_2" type="revolute">
+  <parent link="link_1"/>
+  <child link="link_2"/>
+  <origin xyz="0 0 0.5" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+  <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+</joint>
+
+<!-- Revolute Joint 3 -->
+<joint name="joint_3" type="revolute">
+  <parent link="link_2"/>
+  <child link="link_3"/>
+  <origin xyz="0 0 0.4" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+  <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+</joint>
+
+<!-- End-effector (fixed) -->
+<joint name="ee_joint" type="fixed">
+  <parent link="link_3"/>
+  <child link="link_ee"/>
+  <origin xyz="0 0 0.3" rpy="0 0 0"/>
+</joint>
+
+
+</robot>
+
