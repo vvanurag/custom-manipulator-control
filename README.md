@@ -34,7 +34,7 @@ sudo apt install -y \
 # Clone into a ROS 2 workspace
 mkdir -p ~/customArm_ws/src
 cd ~/customArm_ws/src
-git clone https://github.com/YOUR_USERNAME/custom_arm.git
+git clone https://github.com/vvanurag/custom-manipulator-control.git
 
 # Build
 cd ~/customArm_ws
